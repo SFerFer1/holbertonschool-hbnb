@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from Base import Base
+from base import Base
 
 class Place(Base):
     def __init__(self, title, description, price, latitude, longitude, owner):
