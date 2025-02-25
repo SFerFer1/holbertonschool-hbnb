@@ -1,7 +1,4 @@
-import uuid
-from datetime import datetime
 from base import Base
-import re
 from email_validator import validate_email, EmailNotValidError
 
 class User(Base):
@@ -22,7 +19,7 @@ class User(Base):
         if len(value) > 50:
             raise ValueError("first name can not be longer than 50 characters")
 
-    # Propery to 'first_name'
+    # Propery to 'last_name'
     @property
     def last_name(self):
         return self._last_name
@@ -31,3 +28,19 @@ class User(Base):
     def fistName(self, value):
         if len(value) > 50:
             raise ValueError("last name can not be longer than 50 characters")
+        
+    # Propery to 'email'
+    @property
+    def email(self):
+        return self._email
+    
+    @email.setter
+    def email(self, valor):
+        try:
+            validate_email(valor)
+            self._email = valor
+        except EmailNotValidError as error:
+            raise ValueError(f'Error: {str(error)}')
+
+
+    

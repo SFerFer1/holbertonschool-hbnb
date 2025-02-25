@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from base import Base
-
+from user import User
 class Place(Base):
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
