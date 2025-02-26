@@ -2,6 +2,5 @@ flask
 flask-restx
 uuid
 datetime
-email_validator
 flask_restx 
 app.services
