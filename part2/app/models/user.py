@@ -1,4 +1,4 @@
-from base import Base
+from app.models.base import Base
 from email_validator import validate_email, EmailNotValidError
 
 class User(Base):
@@ -15,32 +15,30 @@ class User(Base):
         return self._first_name
 
     @first_name.setter
-    def fist_name(self, value):
+    def first_name(self, value):
         if len(value) > 50:
             raise ValueError("first name can not be longer than 50 characters")
-
+        self.first_name = value
     # Propery to 'last_name'
     @property
     def last_name(self):
         return self._last_name
 
     @last_name.setter
-    def fistName(self, value):
+    def last_name(self, value):
         if len(value) > 50:
             raise ValueError("last name can not be longer than 50 characters")
-        
+        self.last_name = value
     # Propery to 'email'
     @property
     def email(self):
         return self._email
     
     @email.setter
-    def email(self, valor):
+    def email(self, value):
         try:
-            validate_email(valor)
-            self._email = valor
+            validate_email(value)
+            self._email = value
         except EmailNotValidError as error:
             raise ValueError(f'Error: {str(error)}')
 
-
-    

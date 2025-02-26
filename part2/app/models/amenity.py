@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from base import Base
+from app.models.base import Base
 
 class Amenity(Base):
     def __init__(self, name):

@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+from app.models.base import Base
+from app.models.user import User
 
-from base import Base
-from user import User
+
+
 class Place(Base):
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
@@ -69,11 +71,11 @@ class Place(Base):
             raise ValueError("The owner must be a valid instance of User")
         self._owner = value
 
+    
     def add_review(self, review):
+        """Add a review to the place."""
         self.reviews.append(review)
 
     def add_amenity(self, amenity):
+        """Add an amenity to the place."""
         self.amenities.append(amenity)
-
-    def __repr__(self):
-        return f"<Place {self.title} - {self.price}>"
