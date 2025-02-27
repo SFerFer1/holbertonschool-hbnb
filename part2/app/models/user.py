@@ -33,9 +33,9 @@ class User(Base):
     # Propery to 'email'
     @property
     def email(self):
-        return self._last_name
-    
+        return self._email
+       
     @email.setter
     def email(self, value):
-        self._last_name = value
+        self._email = value
 
