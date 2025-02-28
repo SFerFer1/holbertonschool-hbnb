@@ -4,3 +4,5 @@ uuid
 datetime
 flask_restx 
 app.services
+app.models.base 
+email_validator 

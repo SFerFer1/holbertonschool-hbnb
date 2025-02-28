@@ -1,5 +1,5 @@
 from app.models.base import Base
-
+from email_validator import validate_email, EmailNotValidError
 
 class User(Base):
     def __init__(self, first_name:str, last_name:str, email:str):
@@ -39,3 +39,10 @@ class User(Base):
     def email(self, value):
         self._email = value
 
+    @email.setter
+    def email(self, value):
+        try:
+            t = validate_email(value, check_deliverability=False)
+            self._email = t.normalized
+        except EmailNotValidError as e:
+            raise ValueError(f"Invalid email: {str(e)}")
