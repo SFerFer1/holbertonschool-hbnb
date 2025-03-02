@@ -71,8 +71,12 @@ class ReviewResource(Resource):
     def put(self, review_id):
         """Update a review's information"""
         data = api.payload
-
-        review = facade.get_user()
+        all_places = facade.get_all_places
+        for place in all_places:
+            for reviews in place.reviews:
+                if reviews.id == review_id:
+                    review =reviews
+        
         if not review:
             return {'Error': 'Review not found'}, 404
         
@@ -97,5 +101,12 @@ class PlaceReviewList(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get all reviews for a specific place"""
-        # Placeholder for logic to return a list of reviews for a place
-        pass
+        place = facade.get_place(place_id)
+        if not place:
+            return {"error": "Place not found"}, 404
+        reviews = facade.get_all_reviews()
+        if not reviews:
+            return {"error": "Reviews not found"}, 404
+        return [{'id': review.id,
+                  'text': review.text,
+                    'rating': review.rating} for review in reviews if review.place.id == place_id], 200

@@ -35,14 +35,22 @@ class TestHBnBFacade(unittest.TestCase):  # Creamos nuestra clase de pruebas
 
     def test_create_place(self):
         """Prueba que se pueda crear un lugar"""
+        user_data = {
+            "first_name": "Lu", 
+            "last_name": "Rios", 
+            "email": "lu.rios@example.com"
+        }
+        user = self.facade.create_user(user_data)
+
         place_data = {
             "title": "Departamento pequeño",
             "description": "Un pequeño departamento en el centro de la ciudad", 
             "price": 50,
             "latitude": 40.0, 
             "longitude": -74.0,
-            
+            "owner": user
         }
+
         
         place = self.facade.create_place(place_data)  # Creamos un lugar
         

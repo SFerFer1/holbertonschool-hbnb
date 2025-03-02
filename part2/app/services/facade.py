@@ -116,15 +116,33 @@ class HBnBFacade:
         return self.review_repo.get(review_id)
 
     def get_all_reviews(self):
-        return self.review_repo.get_all()
-
+        all_reviews = []
+        for place in self.place_repo.get_all():
+            all_reviews.extend(place.reviews)
+        return all_reviews
+    
     def get_reviews_by_place(self, place_id):
         place = self.place_repo.get(place_id)
         return place.reviews
 
     def update_review(self, review_id, review_data):
-    # Placeholder for logic to update a review
-        pass
+        for place in self.place_repo.get_all():
+           for review in place.reviews:
+                if review.id == review_id:
+                    for key, value in review_data.items():
+                        if hasattr(review, key):
+                            setattr(review, key, value)
+                            return f"Review with ID {review_id} has been changed."
+        return f"Review with ID {review_id} not found."
+                        
 
+
+        
     def delete_review(self, review_id):
-        pass
+        for place in self.place_repo.get_all():
+            for review in place.reviews:
+                if review.id == review_id:
+                    place.reviews.remove(review)
+                return f"Review with ID {review_id} has been deleted."
+            
+            return f"Review with ID {review_id} not found."
