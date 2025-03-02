@@ -3,12 +3,13 @@ from app import create_app  # Importamos la app Flask
 from app.services.facade import HBnBFacade  # Importamos la Facade
 
 class TestHBnBFacade(unittest.TestCase):  # Creamos nuestra clase de pruebas
-    
+    test_user = 0
     def setUp(self):  # Esto se ejecuta ANTES de cada prueba
         self.app = create_app()  # Creamos la app de Flask
         self.client = self.app.test_client()  # Cliente para hacer peticiones
         self.facade = HBnBFacade()  # Creamos la Facade que maneja los datos
-    
+
+
     def test_create_user(self):  
         """Prueba que se pueda crear un usuario"""
         user_data = {
@@ -18,7 +19,7 @@ class TestHBnBFacade(unittest.TestCase):  # Creamos nuestra clase de pruebas
         }
         
         user = self.facade.create_user(user_data)  # Creamos un usuario
-        
+        test_user =user
         # Comprobamos que se haya creado bien
         self.assertIsNotNone(user)  # Verifica que el usuario no sea None
         self.assertEqual(user.first_name, "Juan")  # Verifica que el nombre sea correcto
@@ -35,10 +36,12 @@ class TestHBnBFacade(unittest.TestCase):  # Creamos nuestra clase de pruebas
     def test_create_place(self):
         """Prueba que se pueda crear un lugar"""
         place_data = {
-            "title": "Departamento pequeño", 
-            "price": 50, 
+            "title": "Departamento pequeño",
+            "description": "Un pequeño departamento en el centro de la ciudad", 
+            "price": 50,
             "latitude": 40.0, 
-            "longitude": -74.0
+            "longitude": -74.0,
+            
         }
         
         place = self.facade.create_place(place_data)  # Creamos un lugar
