@@ -62,7 +62,11 @@ class PlaceList(Resource):
     def get(self):
         """Retrieve a list of all places"""
         # Placeholder for logic to return a list of all places
-        pass
+        all_places = facade.get_all_places()
+        return [{'id': place.id,
+                'title': place.title,
+                'latitude': place.latitude,
+                'longitude': place.longitude} for place in all_places], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -70,14 +74,46 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get place details by ID"""
-        # Placeholder for the logic to retrieve a place by ID, including associated owner and amenities
-        pass
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'Place not found'}, 404
+        
+        owner = place.owner
+        if not owner:
+            return {'error': 'Owner not found'}, 404
 
+        amenities = facade.amenity_repo.get_all()
+        ret = {
+            'id': place.id,
+            'title': place.title,
+            'description': place.description,
+            'latitude': place.latitude,
+            'longitude': place.longitude,
+            'owner': {
+                'id': owner.id,
+                'first_name': owner.first_name,
+                'last_name': owner.last_name,
+                'email': owner.email
+            },
+            'amenities': [{
+                'id': amenity.id,
+                'name': amenity.name
+            } for amenity in amenities if amenity.place_id == place.id]
+        }
+        return ret, 200
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
         """Update a place's information"""
-        # Placeholder for the logic to update a place by ID
-        pass
+        data = api.payload
+
+        place = facade.place_repo.get(place_id)
+        if not place:
+            return {"error": "Place not found"}, 404
+        
+        updated_place = facade.update_place(place_id, data)
+        if not updated_place:
+            return {"error": "Place updated fail"}, 404
+        return {"message": "Place updated successfully"}, 200

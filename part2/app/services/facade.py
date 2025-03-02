@@ -78,21 +78,40 @@ class HBnBFacade:
 
     def update_place(self, place_id, place_data):
         place = self.place_repo[place_id]
-        owner = place_data['owner']
-        if not place:
-             raise ValueError(f"Place not found")
-        if 'owener' in place_data and  isinstance(place_data['owner'], User):
-            place.owner = place_data[owner]
-            
-        if 'amenities' in place_data and isinstance(place_data['amenities'], list):
-            if not all(isinstance(amenity, Amenity) for amenity in place_data['amenities']):
-                raise TypeError("All elements in amenities must be  a Amenity.")
+        owner = self.user_repo.get(place_data['owner'])
 
+        if 'title' in place_data:
+            place.title = place_data['title']
+        
+        if 'description' in place_data:
+            place.description = place_data['description']
+        
+        if 'price' in place_data:
+            place.price = place_data['price']
+        
+        if 'latitude' in place_data:
+            place.latitude = place_data['latitude']
+        
+        if 'longitude' in place_data:
+            place.longitude = place_data['longitude']
+        
+        if 'owner' in place_data:
+            place.owner = place_data['owner']
+        
+        if 'reviews' in place_data:
+            place.reviews = place_data['reviews']
+        
+        if 'amenities' in place_data:
+            place.amenities = place_data['amenities']
 
-
+        return place
     def create_review(self, review_data):
-        pass
-    
+        review = Review(**review_data)
+        review_data['place'].update_place(review_data['place'].id, review_data)
+        return review
+        
+        
+
     def get_review(self, review_id):
         return self.review_repo.get(review_id)
 
@@ -100,13 +119,12 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-    # Placeholder for logic to retrieve all reviews for a specific place
-        pass
+        place = self.place_repo.get(place_id)
+        return place.reviews
 
     def update_review(self, review_id, review_data):
     # Placeholder for logic to update a review
         pass
 
     def delete_review(self, review_id):
-    # Placeholder for logic to delete a review
         pass
