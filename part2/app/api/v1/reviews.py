@@ -72,7 +72,7 @@ class ReviewResource(Resource):
         """Update a review's information"""
         data = api.payload
 
-        review = 
+        review = facade.get_user()
         if not review:
             return {'Error': 'Review not found'}, 404
         
