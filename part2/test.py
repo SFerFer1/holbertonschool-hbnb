@@ -17,7 +17,7 @@ class TestUserEndpoints(unittest.TestCase):  # Creamos nuestra clase de pruebas
         self.assertEqual(response.status_code, 201)
 
     def test_create_user_invalid_data(self):
-        """Prueba que no se pueda crear un usuario con datos inválidos"""
+        """Prueba que un usuario  no se pueda crear con datos invalidos"""
         response = self.client.post('/api/v1/users/', json={
             "first_name": "", 
             "last_name": "", 
@@ -27,7 +27,7 @@ class TestUserEndpoints(unittest.TestCase):  # Creamos nuestra clase de pruebas
 
     def test_create_amenity(self):
         """Prueba que se pueda crear un amenity"""
-        response = self.client.post('/api/v1/amenities/', json={"name": "WiFi"})
+        response = self.client.post('/api/v1/amenities/', json={"name": "Balcon"})
         self.assertEqual(response.status_code, 201)
 
     def test_create_place(self):
