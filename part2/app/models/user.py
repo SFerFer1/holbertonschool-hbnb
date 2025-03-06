@@ -1,15 +1,14 @@
 from app.models.base import Base
 from email_validator import validate_email, EmailNotValidError
-from flask_bcrypt import Bcrypt
+
 
 class User(Base):
-    def __init__(self, first_name:str, last_name:str, email:str, password:str):
+    def __init__(self, first_name:str, last_name:str, email:str):
         super().__init__()
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.is_admin = False
-        self.password =password
 
     # Property to 'first_name'
     @property
@@ -50,12 +49,3 @@ class User(Base):
             raise ValueError(f"Invalid email: {str(e)}")
         
 
-    def hash_password(self, password):
-
-        # generate_password_hash returns a bytes object, we convert it to string
-
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    def verify_password(self, password):
-
-        return bcrypt.check_password_hash(self.password, password)

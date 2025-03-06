@@ -4,20 +4,17 @@ from app.api.v1.users import api as users_ns
 from app.api.v1.amenities import api as amenities_api
 from app.api.v1.places import api as places_api
 from app.services.facade import HBnBFacade
-from flask_bcrypt import Bcrypt
 
-#  Creamos una instancia de Bcrypt que se usa en toda la app
-bcrypt = Bcrypt()
+
+
 
 facade = HBnBFacade()
 
-def create_app(config_class="config.DevelopmentConfig"):
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config_class)
 
     #  Inicializamos bcrypt
-    bcrypt.init_app(app)
-    
+
     api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')
 
     # Register the users namespace
