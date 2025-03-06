@@ -37,6 +37,8 @@ class HBnBFacade:
             user.last_name = user_data['last_name']
         if 'email' in user_data:
             user.email = user_data['email']
+        if 'password' in user_data:
+            user.password = user_data['email']
 
         self.user_repo.update(user, user_data)
 
