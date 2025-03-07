@@ -20,6 +20,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     #  Inicializamos bcrypt
     app.config.from_object(config_class)
     bcrypt.init_app(app)
+    jwt.init_app(app)
     
     api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')
 
@@ -30,8 +31,4 @@ def create_app(config_class="config.DevelopmentConfig"):
     return app
 
 
-def create_app(config_class=config.DevelopmentConfig):
-     #
-     # Existent code with app Flask instance
-     # ...
-    jwt.init_app(app)
+
