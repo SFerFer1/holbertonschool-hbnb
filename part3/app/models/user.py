@@ -1,6 +1,6 @@
 from app.models.base import Base
 from email_validator import validate_email, EmailNotValidError
-from app import bcrypt
+
 
 class User(Base):
     def __init__(self, first_name:str, last_name:str, email:str, password:str):
@@ -51,17 +51,18 @@ class User(Base):
         
     def hash_password(self, password):
         """Hashes the password before storing it."""
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        from app import bcrypt
+        self._password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        from app import bcrypt
+        return bcrypt.check_password_hash(self.password, password)
 
     @property
     def password(self):
         return self._password
-    
 
     @password.setter
-    def last_name(self, value):
-        if len(value) > 50 or len(value) < 12:
-            raise ValueError("password can not be longer than 50 characters or less than 12")
+    def password(self, value):
         self.hash_password(value)
-        
-
