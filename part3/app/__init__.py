@@ -5,10 +5,13 @@ from app.api.v1.amenities import api as amenities_api
 from app.api.v1.places import api as places_api
 from app.services.facade import HBnBFacade
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 bcrypt = Bcrypt()
 
 facade = HBnBFacade()
+
+jwt = JWTManager()
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
@@ -27,4 +30,8 @@ def create_app(config_class="config.DevelopmentConfig"):
     return app
 
 
-
+def create_app(config_class=config.DevelopmentConfig):
+     #
+     # Existent code with app Flask instance
+     # ...
+    jwt.init_app(app)

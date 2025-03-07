@@ -7,3 +7,4 @@ app.services
 app.models.base 
 email_validator
 flask-bcrypt
+flask-jwt-extended
