@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('places', description='Place operations')
 
@@ -34,15 +36,21 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
+        current_user = get_jwt_identity()
+
+
+
         place_data = api.payload
         user = facade.get_user(place_data['owner_id'])
         title = facade.get_place(place_data['title'])
+        """esto lo cambio desupes"""
+        if user.id != current_user.get('id'):
+            return {'error:esto lo '}, 400
 
-        if   title:
+        if title:
             return {'error:place alredy exist'}, 400
 
-
-        if  not user:
+        if not user:
             return {'error:user not found'}, 404
 
         place_data.pop('owner_id')

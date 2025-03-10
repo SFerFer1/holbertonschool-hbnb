@@ -101,26 +101,34 @@ class HBnBFacade:
             place.owner = place_data['owner']
         
         if 'reviews' in place_data:
-            place.reviews = place_data['reviews']
+            place.reviews.append(place_data['reviews'])
         
         if 'amenities' in place_data:
-            place.amenities = place_data['amenities']
+            place.amenities.append(place_data['amenities'])
 
         return place
     def create_review(self, review_data):
         review = Review(**review_data)
-        review_data['place'].update_place(review_data['place'].id, review_data)
+        dic_review = {
+            "reviews": review_data
+        }
+        self.update_place(review_data['place'], dic_review)
         return review
-        
-        
 
     def get_review(self, review_id):
-        return self.review_repo.get(review_id)
+        for place in self.get_all_places:
+            for reviews in place.reviews:
+                for review in reviews:
+                    if review.id == review_id:
+                        return review
+        return f"{review_id} doesn´t match any review"
+        
 
     def get_all_reviews(self):
         all_reviews = []
         for place in self.place_repo.get_all():
-            all_reviews.extend(place.reviews)
+            for review in place.reviews:
+                all_reviews.extend(review)
         return all_reviews
     
     def get_reviews_by_place(self, place_id):
@@ -128,23 +136,23 @@ class HBnBFacade:
         return place.reviews
 
     def update_review(self, review_id, review_data):
-        for place in self.place_repo.get_all():
-           for review in place.reviews:
-                if review.id == review_id:
-                    for key, value in review_data.items():
-                        if hasattr(review, key):
-                            setattr(review, key, value)
-                            return f"Review with ID {review_id} has been changed."
-        return f"Review with ID {review_id} not found."
-                        
+        review_to_change = self.get_review(review_id)
+        for place in self.get_all_places:
+            for review in place.reviews:
+                if review == review_to_change:
+                    if 'text' in review_data:
+                        review.text = review_data['text']
+
+                    if 'rating' in review_data:
+                        review.rating = review_data['rating']
+        return f"{review_id} doesn´t match any review"
 
 
-        
     def delete_review(self, review_id):
         for place in self.place_repo.get_all():
             for review in place.reviews:
                 if review.id == review_id:
-                    place.reviews.remove(review)
-                return f"Review with ID {review_id} has been deleted."
+                    place.reviews.pop(review)
+                    return f"Review with ID {review_id} has been deleted."
             
             return f"Review with ID {review_id} not found."
