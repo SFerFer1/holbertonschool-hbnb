@@ -68,7 +68,6 @@ class HBnBFacade:
     def create_place(self, place_data):
         place = Place(**place_data)
 
-
         self.place_repo.add(place)
         return place
 
@@ -109,14 +108,12 @@ class HBnBFacade:
         return place
     def create_review(self, review_data):
         review = Review(**review_data)
-        dic_review = {
-            "reviews": review_data
-        }
-        self.update_place(review_data['place'], dic_review)
+        place = review_data['place']
+        place.add_review(review)
         return review
 
     def get_review(self, review_id):
-        for place in self.get_all_places:
+        for place in self.get_all_places():
             for reviews in place.reviews:
                 for review in reviews:
                     if review.id == review_id:
@@ -128,7 +125,7 @@ class HBnBFacade:
         all_reviews = []
         for place in self.place_repo.get_all():
             for review in place.reviews:
-                all_reviews.extend(review)
+                all_reviews.append(review)
         return all_reviews
     
     def get_reviews_by_place(self, place_id):

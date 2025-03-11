@@ -11,7 +11,7 @@ review_model = api.model('Review', {
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
-@api.route('/')
+@api.route('/reviews')
 class ReviewList(Resource):
     @api.expect(review_model)
     @api.response(201, 'Review successfully created')
@@ -20,7 +20,8 @@ class ReviewList(Resource):
         """Register a new review"""
         review_data = api.payload
         ereview = facade.get_review(review_data['text'])
-        if ereview:
+        all_reviews = facade.get_all_reviews()
+        if ereview in all_reviews:
             return {"Error": "Review already exist"}, 400
         
         user = facade.get_user(review_data['user_id'])
@@ -50,7 +51,7 @@ class ReviewList(Resource):
                   'text': review.text,
                     'rating': review.rating} for review in all_review], 200
 
-@api.route('/<review_id>')
+@api.route('/reviews/<review_id>')
 class ReviewResource(Resource):
     @api.response(200, 'Review details retrieved successfully')
     @api.response(404, 'Review not found')
@@ -97,6 +98,7 @@ class ReviewResource(Resource):
 
 @api.route('/places/<place_id>/reviews')
 class PlaceReviewList(Resource):
+
     @api.response(200, 'List of reviews for the place retrieved successfully')
     @api.response(404, 'Place not found')
     def get(self, place_id):
@@ -108,5 +110,5 @@ class PlaceReviewList(Resource):
         if not reviews:
             return {"error": "Reviews not found"}, 404
         return [{'id': review.id,
-                  'text': review.text,
-                    'rating': review.rating} for review in reviews if review.place.id == place_id], 200
+                'text': review.text,
+                'rating': review.rating} for review in reviews if review.place.id == place_id], 200

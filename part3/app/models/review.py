@@ -3,12 +3,13 @@ from app.models.place import Place
 from app.models.user import User
 
 class Review(Base):
-    def __init__(self, text, rating, place, user):
+    def __init__(self, text, rating, user, place):
         super().__init__()
         self.text = text
         self.rating = rating
-        self.place = place
         self.user = user
+        self.place = place
+        
     # Propiedad para 'text'
     @property
     def text(self):
@@ -29,15 +30,6 @@ class Review(Base):
         self._rating = value
     # Propiedad para 'place'
     @property
-    def place(self):
-        return self._place
-    @place.setter
-    def place(self, value):
-        if not isinstance(value, Place):
-            raise ValueError("El lugar debe ser una instancia de la clase 'Place'.")
-        self._place = value
-    # Propiedad para 'user'
-    @property
     def user(self):
         return self._user
     @user.setter
@@ -45,3 +37,12 @@ class Review(Base):
         if not isinstance(value, User):
             raise ValueError("El usuario debe ser una instancia de la clase 'User'.")
         self._user = value
+
+    @property
+    def place(self):
+        return self._place
+    @place.setter
+    def place(self, value):
+        if not isinstance(value, Place):
+            raise ValueError("El lugar debe ser una instancia de la clase 'Place'.")
+        self._place = value

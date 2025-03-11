@@ -4,8 +4,9 @@ from app.models.user import User
 
 
 
+
 class Place(Base):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner, amenities):
         super().__init__()
         self.title = title
         self.description = description
@@ -14,7 +15,7 @@ class Place(Base):
         self.longitude = longitude
         self.owner = owner
         self.reviews = []
-        self.amenities = []
+        self.amenities = amenities
     
     # Propiedad para 'title'
     @property

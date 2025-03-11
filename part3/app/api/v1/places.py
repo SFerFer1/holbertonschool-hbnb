@@ -1,7 +1,5 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('places', description='Place operations')
 
@@ -18,6 +16,13 @@ user_model = api.model('PlaceUser', {
     'email': fields.String(description='Email of the owner')
 })
 
+review_model = api.model('Review', {
+    'text': fields.String(required=True, description='Text of the review'),
+    'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
+    'user_id': fields.String(required=True, description='ID of the user'),
+    'place_id': fields.String(required=True, description='ID of the place')
+    })
+
 # Define the place model for input validation and documentation
 place_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
@@ -26,7 +31,8 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
+    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
+    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
 @api.route('/')
@@ -36,16 +42,10 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-        current_user = get_jwt_identity()
-
-
 
         place_data = api.payload
         user = facade.get_user(place_data['owner_id'])
         title = facade.get_place(place_data['title'])
-        """esto lo cambio desupes"""
-        if user.id != current_user.get('id'):
-            return {'error:esto lo '}, 400
 
         if title:
             return {'error:place alredy exist'}, 400
