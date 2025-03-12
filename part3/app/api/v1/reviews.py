@@ -19,10 +19,10 @@ class ReviewList(Resource):
     def post(self):
         """Register a new review"""
         review_data = api.payload
-        ereview = facade.get_review(review_data['text'])
         all_reviews = facade.get_all_reviews()
-        if ereview in all_reviews:
-            return {"Error": "Review already exist"}, 400
+        for review in all_reviews:
+            if review.user.id == review_data['user_id'] and review.place.id== review_data['place_id']:
+                return {"Error": "Review already exist"}, 400
         
         user = facade.get_user(review_data['user_id'])
         if not user:
@@ -56,7 +56,6 @@ class ReviewResource(Resource):
     @api.response(200, 'Review details retrieved successfully')
     @api.response(404, 'Review not found')
     def get(self, review_id):
-        review_data = api.payload
         """Get review details by ID"""
         # Placeholder for the logic to retrieve a review by ID
         review = facade.get_review(review_id)
@@ -72,7 +71,7 @@ class ReviewResource(Resource):
     def put(self, review_id):
         """Update a review's information"""
         data = api.payload
-        all_places = facade.get_all_places
+        all_places = facade.get_all_places()
         for place in all_places:
             for reviews in place.reviews:
                 if reviews.id == review_id:

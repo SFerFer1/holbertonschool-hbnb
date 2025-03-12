@@ -8,8 +8,8 @@ class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
+        self.review_repo = InMemoryRepository()
         self.place_repo = InMemoryRepository()
-
 
     def create_user(self, user_data):
         user = User(**user_data)
@@ -29,7 +29,7 @@ class HBnBFacade:
 
         user = self.user_repo.get(user_id)
         if not user:
-            raise ValueError(f"Usuer not found.")
+            raise ValueError(f"User not found.")
 
         if 'first_name' in user_data:
             user.first_name = user_data['first_name']
@@ -78,8 +78,8 @@ class HBnBFacade:
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        place = self.place_repo[place_id]
-        owner = self.user_repo.get(place_data['owner'])
+        place = self.place_repo(place_id)
+        owner = place_data['owner']
 
         if 'title' in place_data:
             place.title = place_data['title']
@@ -95,10 +95,7 @@ class HBnBFacade:
         
         if 'longitude' in place_data:
             place.longitude = place_data['longitude']
-        
-        if 'owner' in place_data:
-            place.owner = place_data['owner']
-        
+
         if 'reviews' in place_data:
             place.reviews.append(place_data['reviews'])
         
@@ -110,23 +107,16 @@ class HBnBFacade:
         review = Review(**review_data)
         place = review_data['place']
         place.add_review(review)
+        self.review_repo.add(review)
         return review
 
     def get_review(self, review_id):
-        for place in self.get_all_places():
-            for reviews in place.reviews:
-                for review in reviews:
-                    if review.id == review_id:
-                        return review
-        return f"{review_id} doesn´t match any review"
+        return self.review_repo.get(review_id)
         
 
     def get_all_reviews(self):
-        all_reviews = []
-        for place in self.place_repo.get_all():
-            for review in place.reviews:
-                all_reviews.append(review)
-        return all_reviews
+        return self.review_repo.get_all()
+        
     
     def get_reviews_by_place(self, place_id):
         place = self.place_repo.get(place_id)
@@ -134,7 +124,7 @@ class HBnBFacade:
 
     def update_review(self, review_id, review_data):
         review_to_change = self.get_review(review_id)
-        for place in self.get_all_places:
+        for place in self.get_all_places():
             for review in place.reviews:
                 if review == review_to_change:
                     if 'text' in review_data:
@@ -146,10 +136,9 @@ class HBnBFacade:
 
 
     def delete_review(self, review_id):
-        for place in self.place_repo.get_all():
-            for review in place.reviews:
-                if review.id == review_id:
-                    place.reviews.pop(review)
-                    return f"Review with ID {review_id} has been deleted."
-            
+        try:
+            self.place_repo.delete(review_id)
+            self.review_repo.delete(review_id)
+            return f"Review with ID {review_id} has been deleted."
+        except: 
             return f"Review with ID {review_id} not found."

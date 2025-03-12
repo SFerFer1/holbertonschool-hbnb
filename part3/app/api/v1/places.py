@@ -71,10 +71,19 @@ class PlaceList(Resource):
         """Retrieve a list of all places"""
         # Placeholder for logic to return a list of all places
         all_places = facade.get_all_places()
+
         return [{'id': place.id,
                 'title': place.title,
                 'latitude': place.latitude,
-                'longitude': place.longitude} for place in all_places], 200
+                'longitude': place.longitude,
+                'reviews': 
+                [{'text': review.text,
+                'rating': review.rating,
+                'user_id': review.user.id
+                }
+                for review in facade.get_reviews_by_place(place.id)]
+                } 
+                for place in all_places], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
