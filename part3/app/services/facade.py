@@ -119,7 +119,7 @@ class HBnBFacade:
         
     
     def get_reviews_by_place(self, place_id):
-        place = self.place_repo.get(place_id)
+        place = self.get_place(place_id)
         return place.reviews
 
     def update_review(self, review_id, review_data):
