@@ -1,11 +1,19 @@
 #!/usr/bin/python3
 from app.models.base import Base
 from app.models.user import User
-
-
-
+from app import db
 
 class Place(Base):
+    __tablename__ = 'place'
+
+    _title = db.Column(db.String(50), nullable=False)
+    _description = db.Column(db.String(200), default=None)
+    _price = db.Column(db.Integer, nullable=False)
+    _latitude = db.Column(db.Float, nullable=False)
+    _longitude = db.Column(db.Float, nullable=False)
+
+
+
     def __init__(self, title, description, price, latitude, longitude, owner, amenities):
         super().__init__()
         self.title = title
@@ -16,7 +24,9 @@ class Place(Base):
         self.owner = owner
         self.reviews = []
         self.amenities = amenities
+
     
+
     # Propiedad para 'title'
     @property
     def title(self):
@@ -72,11 +82,19 @@ class Place(Base):
             raise ValueError("The owner must be a valid instance of User")
         self._owner = value
 
+    @property
+    def description(self):
+        return self._description
     
+    @description.setter
+    def description(self, value):
+        self._description = value
+
+
     def add_review(self, review):
         """Add a review to the place."""
-        self.reviews.append(review)
+        self._reviews.append(review)
 
     def add_amenity(self, amenity):
         """Add an amenity to the place."""
-        self.amenities.append(amenity)
+        self._amenities.append(amenity)

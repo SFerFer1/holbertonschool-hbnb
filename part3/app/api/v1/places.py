@@ -49,11 +49,14 @@ class PlaceList(Resource):
         place_data = api.payload
         if place_data['owner_id'] != current_user:
             return {'error': 'Unauthorized action'}, 403
+        
         user = facade.get_user(place_data['owner_id'])
-        title = facade.get_place(place_data['title'])
 
-        if title:
-            return {'error:place alredy exist'}, 400
+
+        
+        for place in facade.get_all_places():
+            if place_data['title'] == place.title:
+                return {'error': 'place alredy exist'}, 400
 
         if not user:
             return {'error:user not found'}, 404

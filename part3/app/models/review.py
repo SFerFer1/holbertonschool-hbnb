@@ -1,8 +1,17 @@
 from app.models.base import Base
 from app.models.place import Place
 from app.models.user import User
+from app import db
 
 class Review(Base):
+    __tablename__ = 'reviews'
+
+    _text = db.Column(db.String(50), nullable=False)
+    _rating = db.Column(db.Integer, nullable=False)
+    _latitude = db.Column(db.Float, nullable=False)
+
+
+
     def __init__(self, text, rating, user, place):
         super().__init__()
         self.text = text

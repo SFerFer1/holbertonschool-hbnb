@@ -11,12 +11,12 @@ class User(Base):
     _password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-    def __init__(self, first_name:str, last_name:str, email:str, password:str):
+    def __init__(self, first_name:str, last_name:str, email:str, password:str, is_admin: bool = False):
         super().__init__()
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.is_admin = False
+        self.is_admin = is_admin 
         self.password = password
 
     # Property to 'first_name'
@@ -44,8 +44,6 @@ class User(Base):
     @property
     def email(self):
         return self._email
-       
-
 
     @email.setter
     def email(self, value):
