@@ -30,42 +30,42 @@ class Place(Base):
 
     
     @validates("_title")
-    def title(self, value):
+    def validate_title(self, key, value):
         if not value or len(value) > 100:
             raise ValueError("The title is required and must be a maximum of 100 characters.")
         self._title = value
         return value
 
     @validates("_price")
-    def price(self, value):
+    def validate_price(self, key, value):
         if value <= 0:
             raise ValueError("The price must be a positive value")
         self._price = value
         return value
 
     @validates("_latitude")
-    def latitude(self, value):
+    def validate_latitude(self, key, value):
         if not (-90.0 <= value <= 90.0):
             raise ValueError("Latitude must be in the range of -90.0 to 90.0")
         self._latitude = value
         return value
     
     @validates("_longitude")
-    def longitude(self, value):
+    def validate_longitude(self, key, value):
         if not (-180.0 <= value <= 180.0):
             raise ValueError("The length must be in the range -180.0 to 180.0")
         self._longitude = value
         return value
     
     @validates("_owner")
-    def owner(self, value):
+    def validate_owner(self, key, value):
         if not isinstance(value, User):
             raise ValueError("The owner must be a valid instance of User")
         self._owner = value
         return value
     
     @validates("_description")
-    def description(self, value):
+    def validate_description(self, key, value):
         self._description = value
         return value
 

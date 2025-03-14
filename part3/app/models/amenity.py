@@ -7,7 +7,7 @@ from sqlalchemy.orm import validates
 class Amenity(Base):
     __tablename__ = 'amenities'
 
-    _name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
 
     def __init__(self, name):
         super().__init__()  # Llama al constructor de Base (que maneja el ID y datetime)
@@ -15,11 +15,10 @@ class Amenity(Base):
 
     # Propiedad para 'name'
 
-    @validates('_name')
-    def name(self, value):
+    @validates('name')
+    def validate_name(self, key, value):
         if len(value) > 50:
             raise ValueError("The name can be a maximum of 50 characters.")
         if not value:
             raise ValueError("the email can't be empty")
-        self._name = value
         return value

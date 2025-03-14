@@ -1,6 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Namespace('users', description='User operations')
 
@@ -55,10 +55,16 @@ class UserResource(Resource):
     def put(self, user_id):
         user_data = api.payload
         curent_user = get_jwt_identity()
+
         if user_id != curent_user:
             return {'error': 'Unauthorized action'}, 403
+        
+        claims = get_jwt()
+        if claims.get('is_admin', False):
 
-        if 'email' in user_data or 'password' in user_data:
+        if curent_user.get('is_admin'):
+            pass
+        elif 'email' in user_data or 'password' in user_data:
             return {'error': 'You cannot modify email or password'}, 400
 
 
