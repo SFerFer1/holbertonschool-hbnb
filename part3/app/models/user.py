@@ -19,39 +19,29 @@ class User(Base):
         self.is_admin = is_admin 
         self.password = password
 
-    # Property to 'first_name'
-    @property
-    def first_name(self):
-        return self._first_name
 
-    @first_name.setter
+    @validates("_first_name")
     def first_name(self, value):
         if len(value) > 50:
             raise ValueError("first name can not be longer than 50 characters")
         self._first_name = value
-        
-    # Propery to 'last_name'
-    @property
-    def last_name(self):
-        return self._last_name
+        return value
 
-    @last_name.setter
+    @validates("_last_name")
     def last_name(self, value):
         if len(value) > 50:
             raise ValueError("last name can not be longer than 50 characters")
         self._last_name = value
-    # Propery to 'email'
-    @property
-    def email(self):
-        return self._email
+        return value
 
-    @email.setter
+    @validates("_email")
     def email(self, value):
         try:
             t = validate_email(value, check_deliverability=False)
             self._email = t.normalized
         except EmailNotValidError as e:
             raise ValueError(f"Invalid email: {str(e)}")
+        return value
         
     def hash_password(self, password):
         """Hashes the password before storing it."""
