@@ -1,8 +1,16 @@
 from app.models.base import Base
 from email_validator import validate_email, EmailNotValidError
-
+from app import db
 
 class User(Base):
+    __tablename__ = 'users'
+
+    _first_name = db.Column(db.String(50), nullable=False)
+    _last_name = db.Column(db.String(50), nullable=False)
+    _email = db.Column(db.String(120), nullable=False, unique=True)
+    _password = db.Column(db.String(128), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
     def __init__(self, first_name:str, last_name:str, email:str, password:str):
         super().__init__()
         self.first_name = first_name
@@ -37,9 +45,7 @@ class User(Base):
     def email(self):
         return self._email
        
-    @email.setter
-    def email(self, value):
-        self._email = value
+
 
     @email.setter
     def email(self, value):
@@ -57,7 +63,7 @@ class User(Base):
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
         from app import bcrypt
-        return bcrypt.check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self._password, password)
 
     @property
     def password(self):
