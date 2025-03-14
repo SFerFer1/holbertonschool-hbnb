@@ -32,7 +32,6 @@ class ReviewList(Resource):
 
         all_reviews = facade.get_all_reviews()
 
-
         for review in all_reviews:
             if review.user.id == review_data['user_id'] and review.place.id == review_data['place_id']:
                 return {"Error": "Review already exist"}, 400

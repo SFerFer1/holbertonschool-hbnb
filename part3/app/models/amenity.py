@@ -2,6 +2,7 @@
 
 from app.models.base import Base
 from app import db
+from sqlalchemy.orm import validates
 
 class Amenity(Base):
     __tablename__ = 'amenities'
@@ -13,14 +14,12 @@ class Amenity(Base):
         self.name = name
 
     # Propiedad para 'name'
-    @property
-    def name(self):
-        return self._name
 
-    @name.setter
+    @validates('_name')
     def name(self, value):
         if len(value) > 50:
             raise ValueError("The name can be a maximum of 50 characters.")
         if not value:
             raise ValueError("the email can't be empty")
         self._name = value
+        return value

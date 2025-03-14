@@ -52,27 +52,25 @@ class PlaceList(Resource):
         
         user = facade.get_user(place_data['owner_id'])
 
-
-        
         for place in facade.get_all_places():
             if place_data['title'] == place.title:
-                return {'error': 'place alredy exist'}, 400
+                return {'error': 'place already exists'}, 400
 
         if not user:
-            return {'error:user not found'}, 404
+            return {'error': 'user not found'}, 404
 
         place_data.pop('owner_id')
         place_data['owner'] = user
         new_place = facade.create_place(place_data)
         return {
-  "id": new_place.id,
-  "title": new_place.title,
-  "description": new_place.description,
-  "price": new_place.price,
-  "latitude": new_place.latitude,
-  "longitude": new_place.longitude,
-  "owner_id": new_place.owner.id
-}, 201
+            "id": new_place.id,
+            "title": new_place.title,
+            "description": new_place.description,
+            "price": new_place.price,
+            "latitude": new_place.latitude,
+            "longitude": new_place.longitude,
+            "owner_id": new_place.owner.id
+            }, 201
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
