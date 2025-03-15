@@ -5,7 +5,7 @@ from app import db
 from sqlalchemy.orm import validates
 
 class Amenity(Base):
-    __tablename__ = 'amenities'
+    __tablename__ = 'amenity'
 
     name = db.Column(db.String(100), nullable=False)
 

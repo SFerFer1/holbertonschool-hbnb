@@ -7,13 +7,13 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import ForeignKey
 
 class Review(Base):
-    __tablename__ = 'reviews'
+    __tablename__ = 'review'
 
     text = db.Column(db.String(50), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
-    user = db.Column(UUID(as_uuid=True), ForeignKey('User.id'), nullable=False)
-    place = db.Column(UUID(as_uuid=True), ForeignKey('Place.id'), nullable=False)
+    user = db.Column(UUID(as_uuid=True), ForeignKey('user.id'), nullable=False)
+    place = db.Column(UUID(as_uuid=True), ForeignKey('place.id'), nullable=False)
     def __init__(self, text, rating, user, place):
         super().__init__()
         self.text = text
@@ -34,23 +34,14 @@ class Review(Base):
             raise ValueError("La calificación debe ser un número entre 1 y 5.")
         return value
    
-    @property
-    def user(self):
-        return self._user
-
-    #falta hacer el validates para user, acordarse!!
-    @user.setter
-    def user(self, value):
+    @validates("user")
+    def user(self, key, value):
         if not isinstance(value, User):
             raise ValueError("El usuario debe ser una instancia de la clase 'User'.")
-        self._user = value
+        return value
 
-    #falta hacer el validates para place, acordarse!!
-    @property
-    def place(self):
-        return self._place
-    @place.setter
-    def place(self, value):
+    @validates("place")
+    def place(self, key, value):
         if not isinstance(value, Place):
             raise ValueError("El lugar debe ser una instancia de la clase 'Place'.")
-        self._place = value
+        return value

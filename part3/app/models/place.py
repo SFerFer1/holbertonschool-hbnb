@@ -3,9 +3,15 @@ from app.models.base import Base
 from app.models.user import User
 from app import db
 from sqlalchemy.orm import validates
-from sqlalchemy import relationship
 from sqlalchemy.dialects.postgresql import UUID 
 from sqlalchemy import ForeignKey
+
+
+class Amenity_place(Base):
+    __tablename__ = 'place_amenities'
+    id_place = db.Column(UUID(as_uuid=True), ForeignKey('place.id'), primary_key=True)
+    id_amenity = db.Column(UUID(as_uuid=True), ForeignKey('amenity.id'), primary_key=True)
+
 
 class Place(Base):
     __tablename__ = 'place'
@@ -15,9 +21,7 @@ class Place(Base):
     price = db.Column(db.Integer, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    owner_id = db.Column(UUID(as_uuid=True), ForeignKey('User.id'), nullable=False)
-
-    owner = relationship('User', backref='places')
+    owner_id = db.Column(UUID(as_uuid=True), ForeignKey('user.id'), nullable=False)
 
     def __init__(self, title, description, price, latitude, longitude, owner, amenities):
         super().__init__()
