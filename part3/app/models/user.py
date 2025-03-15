@@ -3,6 +3,7 @@ from email_validator import validate_email, EmailNotValidError
 from app import db
 from sqlalchemy.orm import validates
 
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -54,4 +55,4 @@ class User(Base):
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
         from app import bcrypt
-        return bcrypt.check_password_hash(self._password, password)
+        return bcrypt.check_password_hash(self.password, password)
