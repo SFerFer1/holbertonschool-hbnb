@@ -65,12 +65,7 @@ class Place(Base):
             raise ValueError("The length must be in the range -180.0 to 180.0")
         return value
     
-    # @validates("owner")
-    # def validate_owner(self, key, value):
-    #     if not isinstance(value, User):
-    #         raise ValueError("The owner must be a valid instance of User")
-    #     return value
-    
+
     @validates("description")
     def validate_description(self, key, value):
         return value

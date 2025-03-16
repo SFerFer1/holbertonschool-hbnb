@@ -2,6 +2,7 @@ This project is a clone of Airbnb called HBnB.
 
 The organization of the project is as follows:
 
+
 hbnb/
 ├── app/
 │   ├── __init__.py

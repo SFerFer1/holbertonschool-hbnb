@@ -24,19 +24,19 @@ class User(Base):
         self.password = password
 
 
-    @validates("_first_name")
+    @validates("first_name")
     def validate_first_name(self, key, value):
         if len(value) > 50:
             raise ValueError("first name can not be longer than 50 characters")
         return value
 
-    @validates("_last_name")
+    @validates("last_name")
     def validate_last_name(self, key, value):
         if len(value) > 50:
             raise ValueError("last name can not be longer than 50 characters")
         return value
 
-    @validates("_email")
+    @validates("email")
     def validate_email(self, key, value):
         try:
             t = validate_email(value, check_deliverability=False)

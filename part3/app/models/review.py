@@ -35,15 +35,3 @@ class Review(Base):
         if not (1 <= value <= 5):
             raise ValueError("La calificación debe ser un número entre 1 y 5.")
         return value
-   
-    @validates("user")
-    def user(self, key, value):
-        if not isinstance(value, User):
-            raise ValueError("El usuario debe ser una instancia de la clase 'User'.")
-        return value
-
-    @validates("place")
-    def place(self, key, value):
-        if not isinstance(value, Place):
-            raise ValueError("El lugar debe ser una instancia de la clase 'Place'.")
-        return value
