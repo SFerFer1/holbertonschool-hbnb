@@ -74,12 +74,14 @@ class SQLAlchemyRepository(Repository):
             for key, value in data.items():
                 setattr(obj, key, value)
             db.session.commit()
+        return obj
 
     def delete(self, obj_id):
         obj = self.get(obj_id)
         if obj:
             db.session.delete(obj)
             db.session.commit()
+        return obj
 
     def get_by_attribute(self, attr_name, attr_value):
         return self.model.query.filter_by(**{attr_name: attr_value}).first()

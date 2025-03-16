@@ -56,14 +56,15 @@ class HBnBFacade:
         return self.amenity_repo.get_all()
 
     def update_amenity(self, amenity_id, amenity_data):
-        amenity = self.amenity_repo.get(amenity_id)
-        if not amenity:
-            raise ValueError(f"Amenity not found.")
-        if 'name' in amenity_data:
-            amenity.name = amenity_data['name']
+        # amenity = self.amenity_repo.get(amenity_id)
+        # if not amenity:
+        #     raise ValueError(f"Amenity not found.")
+        # if 'name' in amenity_data:
+        #     amenity.name = amenity_data['name']
 
-        self.amenity_repo.update(amenity, amenity_data)
-        return amenity
+        # self.amenity_repo.update(amenity, amenity_data)
+        # return amenity
+        return self.amenity_repo.update(amenity_id, amenity_data)
     
     def create_place(self, place_data):
         place = Place(**place_data)
@@ -123,16 +124,18 @@ class HBnBFacade:
         return place.reviews
 
     def update_review(self, review_id, review_data):
-        review_to_change = self.get_review(review_id)
-        for place in self.get_all_places():
-            for review in place.reviews:
-                if review == review_to_change:
-                    if 'text' in review_data:
-                        review.text = review_data['text']
+        # review_to_change = self.get_review(review_id)
+        # for place in self.get_all_places():
+        #     for review in place.reviews:
+        #         if review == review_to_change:
+        #             if review_data['text']:
+        #                 review.text = review_data['text']
 
-                    if 'rating' in review_data:
-                        review.rating = review_data['rating']
-        return f"{review_id} doesn´t match any review"
+        #             if review_data['rating']:
+        #                 review.rating = review_data['rating']
+        # return review
+        # # return f"{review_id} doesn't match any review"
+        return self.review_repo.update(review_id, review_data)
 
 
     def delete_review(self, review_id):

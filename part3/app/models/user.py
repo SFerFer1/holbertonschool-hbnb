@@ -1,7 +1,7 @@
 from app.models.base import Base
 from email_validator import validate_email, EmailNotValidError
 from app import db
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 
 
 class User(Base):
@@ -12,6 +12,8 @@ class User(Base):
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+    places = relationship('Place', back_populates='owner')
+    reviews = relationship('Review', back_populates='user')
 
     def __init__(self, first_name:str, last_name:str, email:str, password:str, is_admin: bool = False):
         super().__init__()

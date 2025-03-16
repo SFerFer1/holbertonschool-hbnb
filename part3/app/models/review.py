@@ -2,18 +2,20 @@ from app.models.base import Base
 from app.models.place import Place
 from app.models.user import User
 from app import db
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy.dialects.postgresql import UUID 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Column, Table, Integer
 
 class Review(Base):
     __tablename__ = 'review'
 
     text = db.Column(db.String(50), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    latitude = db.Column(db.Float, nullable=False)
-    user = db.Column(UUID(as_uuid=True), ForeignKey('user.id'), nullable=False)
-    place = db.Column(UUID(as_uuid=True), ForeignKey('place.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship('User', back_populates='reviews')
+    place = relationship('Place', back_populates='reviews')
+    place_id = Column(Integer, ForeignKey('place.id'), nullable=False)
+
     def __init__(self, text, rating, user, place):
         super().__init__()
         self.text = text
