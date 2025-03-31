@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 api = Namespace('places', description='Place operations')
 
@@ -143,7 +143,11 @@ class PlaceResource(Resource):
         
 
         place = facade.place_repo.get(place_id)
-        if place.owner.id != current_user:
+
+        claims = get_jwt()
+        if claims.get('is_admin', True):
+            pass
+        elif place.owner.id != current_user:
             return {'error': 'Unauthorized action'}, 403
 
         if not place:

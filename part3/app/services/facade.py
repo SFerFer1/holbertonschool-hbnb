@@ -38,9 +38,9 @@ class HBnBFacade:
         if 'email' in user_data:
             user.email = user_data['email']
         if 'password' in user_data:
-            user.password = user_data['email']
+            user.password = user_data['password']
 
-        self.user_repo.update(user, user_data)
+        self.user_repo.update(user_id, user_data)
 
         return user
 
@@ -79,9 +79,7 @@ class HBnBFacade:
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        place = self.place_repo(place_id)
-        owner = place_data['owner']
-
+        place = self.place_repo.get(place_id)
         if 'title' in place_data:
             place.title = place_data['title']
         
@@ -102,8 +100,9 @@ class HBnBFacade:
         
         if 'amenities' in place_data:
             place.amenities.append(place_data['amenities'])
-
+        self.user_repo.update(place_id, place_data)
         return place
+    
     def create_review(self, review_data):
         review = Review(**review_data)
         place = review_data['place']

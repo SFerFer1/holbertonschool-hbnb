@@ -91,13 +91,11 @@ class ReviewResource(Resource):
         current_user = get_jwt_identity()
 
         claims = get_jwt()
-        if not claims.get('is_admin', True):
-            return {'error': 'Admin privileges required'}, 403
+        if  claims.get('is_admin', True):
+            pass
         elif current_user != review.user.id:
             return {'error': 'Unauthorized action.'}, 403
-        
-        if review.user.id != current_user:
-            return  {'Error': 'You cannot review your own place.'}, 400
+
         
         if not review:
             return {'Error': 'Review not found'}, 404
@@ -113,19 +111,18 @@ class ReviewResource(Resource):
     def delete(self, review_id):
         """Delete a review"""
         current_user = get_jwt_identity()
-
-        claims = get_jwt()
-        if not claims.get('is_admin', True):
-            return {'error': 'Admin privileges required'}, 403
-
         review = facade.get_review(review_id)
 
         if not review:
             return {"error": "Review not found"}, 404
-
+        
+        claims = get_jwt()
+        
+        if claims.get('is_admin', True):
+            pass
         elif current_user != review.user.id:
             return {'error': 'Unauthorized action.'}, 403
-        
+
         review = facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}, 200
 
