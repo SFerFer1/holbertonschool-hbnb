@@ -6,7 +6,6 @@
     <title>List of Places</title>
     <link rel="icon" href="../static/images/icon.png">
     <link rel="stylesheet" href="../static/css/styles.css">
-
 </head>
 <body>
     <header>
@@ -17,20 +16,24 @@
     </header>
 
     <main>
-        <section id="filter">
-            <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <option value="">Any</option>
-                <option value="50">$50</option>
-                <option value="100">$100</option>
-                <option value="200">$200</option>
-                <option value="500">$500</option>
-            </select>
-        </section>
+        <div>
+            <section id="filter">
+                <h2>Filter Options</h2> 
+                <label for="price-filter">Max Price:</label>
+                <select id="price-filter">
+                    <option value="">Any</option>
+                    <option value="50">$50</option>
+                    <option value="100">$100</option>
+                    <option value="200">$200</option>
+                    <option value="500">$500</option>
+                </select>
+            </section>
 
-        <section id="places-list">
-            <!-- Place cards will be dynamically populated here -->
-        </section>
+            <section id="places-list">
+                <h2>Places List</h2> 
+                <!-- Place cards will be dynamically populated here -->
+            </section>
+        </div>
     </main>
 
     <footer>

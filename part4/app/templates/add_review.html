@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,14 +8,21 @@
 </head>
 <body>
     <main>
-        <!-- Add something to idfentify the place you're reviewing -->
+        <!-- Add something to identify the place you're reviewing -->
         <form id="review-form">
             <h2>Add a Review</h2>
             <label for="review">Your Review:</label>
             <textarea id="review" name="review" required></textarea>
             <label for="rating">Rating:</label>
             <select id="rating" name="rating" required>
+                <!-- Placeholder option with empty value -->
+                <option value="" disabled selected>Select a rating</option>
                 <!-- Options for rating -->
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
             </select>
             <button type="submit">Submit Review</button>
         </form>
