@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
+  //getPlaces()
   const LoginForm = document.getElementById('login-form');
  
   if (LoginForm) {
@@ -9,11 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = LoginForm.querySelector("#password").value;
         await loginUser(email, password);
     });
-  
-    
   }
 const loginButton= document.getElementsByClassName('login-button');
-
 const newCookie = getCookie("token");
 if (!newCookie) {
   window.location.href = 'login.html';
@@ -23,7 +20,6 @@ if (!newCookie) {
 }
   
 }
-  
 });
 
 async function loginUser(email, password) {
@@ -41,7 +37,6 @@ async function loginUser(email, password) {
   } else {
       alert('Login failed: ' + response.statusText);
   }
-  
 }
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -60,14 +55,41 @@ return null
 
 async function getPlaces() {
   const places = await fetch("http://127.0.0.1:5000/api/v1/places", {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-  }
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+}
 
 )
-alert("aaaaaaaaaaaaaaaaa"); // Mostrar los lugares en un alert
-return places;
 };
+
+
+const priceFilter =document.getElementById('price-filter');
+priceFilter.addEventListener('change', () => {
+  const selectedValue = priceFilter.value;
+  placesTable();
+
+});
+
+
+async function placesTable()
+{
+  const response = await fetch("http://127.0.0.1:5000/api/v1/places", {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+      
+    }
+ 
+  });
+  const infor = await response.json();
+  const tbody = document.querySelector('#places-table tbody');
+  tbody.innerHTML = '';
+
+  infor.forEach(place => {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${place.title}</td><td>${place.description}</td><td>${place.price}</td><td>${place.latitude}</td><td>${place.longitude}</td><td>${place.reviews.length > 0 ? place.reviews.length : 'No reviews'}</td>`; // Solo agregamos la columna de precio
+    tbody.appendChild(row);
+});
+}

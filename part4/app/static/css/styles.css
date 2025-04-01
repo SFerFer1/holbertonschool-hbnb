@@ -36,3 +36,29 @@ main {
     padding: 2rem;
     text-align: center;
 }
+
+
+
+section#places-list {
+    text-align: center;
+}
+
+table#places-table {
+    border-collapse: collapse;
+    margin: auto;
+    width: 80%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table#places-table th, table#places-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+table#places-table th {
+    background-color: #f4f4f4;
+}

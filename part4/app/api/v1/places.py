@@ -84,6 +84,8 @@ class PlaceList(Resource):
             {
                 'id': place.id,
                 'title': place.title,
+                'v': place.price,
+                'price': place.price,
                 'latitude': place.latitude,
                 'longitude': place.longitude,
                 'reviews': [
