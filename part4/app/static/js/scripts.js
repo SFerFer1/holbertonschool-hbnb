@@ -1,8 +1,3 @@
-/* 
-  This is a SAMPLE FILE to get you started.
-  Please, follow the project instructions to complete the tasks.
-*/
-
 document.addEventListener('DOMContentLoaded', () => {
   
   const LoginForm = document.getElementById('login-form');
@@ -12,14 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const email = LoginForm.querySelector("#email").value;
         const password = LoginForm.querySelector("#password").value;
-        await.loginUser(email, password);
-  });
+        await loginUser(email, password);
+    }); // ← Este paréntesis y punto y coma estaban mal colocados.
+  } // ← Cierre correcto del `if` 
   
-  
-  
-  });
+}); // ← Cierre correcto del `DOMContentLoaded`
 
-  async function loginUser(email, password) {
+async function loginUser(email, password) {
     const response = await fetch("http://127.0.0.1:5000/api/v1/auth/login", {
         method: 'POST',
         headers: {
@@ -29,9 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (response.ok) {
       const data = await response.json();
-      document.cookie = `token=${data.access_token}; path=/;
+      document.cookie = `token=${data.access_token}; path=/`;
       window.location.href = 'index.html';
   } else {
       alert('Login failed: ' + response.statusText);
   }
 }
+
