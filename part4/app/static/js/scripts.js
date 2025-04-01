@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   //getPlaces()
   const LoginForm = document.getElementById('login-form');
- 
+  placesTable("Any")
   if (LoginForm) {
     LoginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -68,12 +68,12 @@ async function getPlaces() {
 const priceFilter =document.getElementById('price-filter');
 priceFilter.addEventListener('change', () => {
   const selectedValue = priceFilter.value;
-  placesTable();
+  placesTable(selectedValue);
 
 });
 
 
-async function placesTable()
+async function placesTable(Max)
 {
   const response = await fetch("http://127.0.0.1:5000/api/v1/places", {
     method: 'GET',
@@ -89,7 +89,13 @@ async function placesTable()
 
   infor.forEach(place => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${place.title}</td><td>${place.description}</td><td>${place.price}</td><td>${place.latitude}</td><td>${place.longitude}</td><td>${place.reviews.length > 0 ? place.reviews.length : 'No reviews'}</td>`; // Solo agregamos la columna de precio
-    tbody.appendChild(row);
+    row.innerHTML = `<td>${place.title}</td><td>${place.description}</td><td>${place.price}</td><td>${place.latitude}</td><td>${place.longitude}</td><td>${place.reviews.length > 0 ? place.reviews.length : 'No reviews'}</td>`;
+    if (Max === "Any") {
+      tbody.appendChild(row);
+  } else if (place.price < Max) {
+      tbody.appendChild(row);
+  }
+  
+  
 });
 }
