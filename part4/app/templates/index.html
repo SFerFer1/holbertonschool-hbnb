@@ -6,6 +6,34 @@
     <title>List of Places</title>
     <link rel="icon" href="../static/images/icon.png">
     <link rel="stylesheet" href="../static/css/styles.css">
+
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) {
+
+                const cookieValue = parts.pop();
+
+                const splitValues = cookieValue.split(';');
+
+                const finalValue = splitValues.shift();
+                return finalValue;
+            }
+            return null
+        }
+
+        const loginButton= document.getElementsByClassName('login-button');
+            const newCookie = getCookie("token");
+            console.log(newCookie)
+            if (!newCookie) {
+            window.location.href = 'login.html';
+            } else {
+            for (let i = 0; i < loginButton.length; i++) {
+                loginButton[i].style.display = 'none'; // Ocultar cada botón
+            }
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -14,6 +42,7 @@
                 <img src="../static/images/logo.png" alt="Logo" class="logo">
             </a>
             <a href="login.html" class="login-button">Login</a>
+            <a href="index.html" class="logout-button">Logout</a>
         </nav>
     </header>
 
@@ -50,9 +79,9 @@
             </section>
         </div>
     </main>
-    <script src="../static/js/scripts.js"></script>
     <footer>
         <p>All rights reserved &copy; 2025</p>
     </footer>
+    <script src="../static/js/scripts.js"></script>
 </body>
 </html>

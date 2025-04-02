@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
   placesTable("any")
   const LoginForm = document.getElementById('login-form');
@@ -34,6 +36,14 @@ async function loginUser(email, password) {
       alert('Login failed: ' + response.statusText);
   }
 }
+
+  document.querySelector(".logout-button").addEventListener("click", function()
+  {
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+  window.location.href = "login.html"
+  });
+
+
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -92,4 +102,5 @@ async function placesTable(Max)
     }
   });
 }
+
 
