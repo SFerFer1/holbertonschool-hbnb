@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         await loginUser(email, password);
     });
   }
-
-
 });
 
 async function loginUser(email, password) {
@@ -43,8 +41,6 @@ async function loginUser(email, password) {
   window.location.href = "login.html"
   });
 
-
-
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -68,9 +64,6 @@ priceFilter.addEventListener('change', () => {
 
 });
 
-
-
-
 //Crear la tabla
 async function placesTable(Max)
 {
@@ -83,24 +76,27 @@ async function placesTable(Max)
     }
  
   });
-  const infor = await response.json();
-  const tbody = document.querySelector('#places-table tbody');
-  tbody.innerHTML = '';
+  const data = await response.json();
+  const articlesContainer = document.querySelector('#place-list');
+  let articlesHTML = '';
 
-  infor.forEach(place => {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${place.title}</td>
-    <td>${place.description}</td>
-    <td>${place.price}</td>
-    <td>${place.latitude}</td>
-    <td>${place.longitude}</td>
-    <td>${place.reviews.length > 0 ? place.reviews.length : 'No reviews'}</td>`;
-    if (Max === "any") {
-      tbody.appendChild(row);
-  } else if (place.price <= Max) {
-      tbody.appendChild(row);
-    }
-  });
+      data.forEach(item => {
+        if (Max === "any") {
+          articlesHTML += `<article><h2>${item.title}</h2><br><p>Descripción: ${item.description}</p><br><p>Precio: ${item.price}</p> <input type="button" value="Ver Mas" class="btnPlaces">  </article> <br>`;
+        }
+        else if (item.price <= Max) {
+          articlesHTML += `<article><h2>${item.title}</h2><br><p>Descripción: ${item.description}</p><br><p>Precio: ${item.price}</p> <input type="button" value="Ver Mas" class="btnPlaces">  </article> <br>`;
+        } 
+        });
+
+      articlesContainer.innerHTML = articlesHTML;
+
+      document.querySelectorAll('.btnPlaces').forEach(button => {
+        button.addEventListener('click', IrPlaces);
+      });
+      function IrPlaces() {
+        
+        window.location.href = 'place.html';
+      }
 }
-
 
