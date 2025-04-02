@@ -12,7 +12,7 @@ cursor.execute("DROP TABLE IF EXISTS users;")
 cursor.execute("DROP TABLE IF EXISTS amenities;")
 
 create_users_table = """
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS user (
     id TEXT PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 """
 create_amenities_table = """
-CREATE TABLE IF NOT EXISTS amenities (
+CREATE TABLE IF NOT EXISTS amenity (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL
 );
@@ -59,12 +59,12 @@ cursor.execute(create_reviews_table)
 cursor.execute(create_amenities_table)
 
 user_table = """
-INSERT INTO users(id, first_name, last_name, email, password, is_admin)
+INSERT INTO user(id, first_name, last_name, email, password, is_admin)
 VALUES (?, ?, ?, ?, ?, ?);
 """
 
 amenity_table = """
-INSERT INTO amenities(id, name) 
+INSERT INTO amenity(id, name) 
 VALUES (?, ?)
 """
 user_data = (user_id, 'Admin', 'HBnB', 'admin@hbnb.io', password_hashed, True)

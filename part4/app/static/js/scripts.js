@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  //getPlaces()
+  placesTable("any")
   const LoginForm = document.getElementById('login-form');
-  placesTable("Any")
   if (LoginForm) {
     LoginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -10,16 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         await loginUser(email, password);
     });
   }
-const loginButton= document.getElementsByClassName('login-button');
-const newCookie = getCookie("token");
-if (!newCookie) {
-  window.location.href = 'login.html';
-} else {
-  for (let i = 0; i < loginButton.length; i++) {
-    loginButton[i].style.display = 'none'; // Ocultar cada botón
-}
-  
-}
+
+
 });
 
 async function loginUser(email, password) {
@@ -34,10 +25,16 @@ async function loginUser(email, password) {
       const data = await response.json();
       document.cookie = `token=${data.access_token}; path=/`;
       window.location.href = 'index.html';
+        
+      const loginButton= document.getElementsByClassName('login-button');
+      for (let i = 0; i < loginButton.length; i++) {
+        loginButton[i].style.display = 'none';
+    }
   } else {
       alert('Login failed: ' + response.statusText);
   }
 }
+
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -53,18 +50,7 @@ function getCookie(name) {
 return null
 }
 
-async function getPlaces() {
-  const places = await fetch("http://127.0.0.1:5000/api/v1/places", {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-}
-
-)
-};
-
-
+//Ee el selector 
 const priceFilter =document.getElementById('price-filter');
 priceFilter.addEventListener('change', () => {
   const selectedValue = priceFilter.value;
@@ -73,13 +59,17 @@ priceFilter.addEventListener('change', () => {
 });
 
 
+
+
+//Crear la tabla
 async function placesTable(Max)
 {
+  const token = getCookie("token");
   const response = await fetch("http://127.0.0.1:5000/api/v1/places", {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
-      
+        'Authorization': `Bearer ${token}`
     }
  
   });
@@ -89,13 +79,17 @@ async function placesTable(Max)
 
   infor.forEach(place => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${place.title}</td><td>${place.description}</td><td>${place.price}</td><td>${place.latitude}</td><td>${place.longitude}</td><td>${place.reviews.length > 0 ? place.reviews.length : 'No reviews'}</td>`;
-    if (Max === "Any") {
+    row.innerHTML = `<td>${place.title}</td>
+    <td>${place.description}</td>
+    <td>${place.price}</td>
+    <td>${place.latitude}</td>
+    <td>${place.longitude}</td>
+    <td>${place.reviews.length > 0 ? place.reviews.length : 'No reviews'}</td>`;
+    if (Max === "any") {
       tbody.appendChild(row);
-  } else if (place.price < Max) {
+  } else if (place.price <= Max) {
       tbody.appendChild(row);
-  }
-  
-  
-});
+    }
+  });
 }
+
